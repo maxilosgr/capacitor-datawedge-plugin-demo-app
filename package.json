@@ -18,7 +18,7 @@
     "@capacitor/android": "^7.0.0",
     "@capacitor/core": "^7.0.0",
     "@capacitor/app": "^7.0.0",
-    "capacitor-datawedge-plugin": "file:../plugin"
+    "capacitor-datawedge-plugin": "github:maxilosgr/capacitor-datawedge-plugin"
   },
   "devDependencies": {
     "@capacitor/cli": "^7.0.0"
