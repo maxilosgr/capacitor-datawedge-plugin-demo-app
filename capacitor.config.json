@@ -1,0 +1,16 @@
+{
+  "appId": "com.datawedge.demo",
+  "appName": "DataWedge Demo",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "minSdkVersion": 22
+  },
+  "plugins": {
+    "DataWedge": {
+      "enableOnStart": true
+    }
+  }
+}

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DataWedge Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DataWedge Plugin Demo</h1>
+            <div id="version-info" class="status-bar"></div>
+            <div id="scanner-status" class="status-bar"></div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="window.showTab('scan', event)">Scan</button>
+            <button class="tab-button" onclick="window.showTab('config', event)">Config</button>
+            <button class="tab-button" onclick="window.showTab('query', event)">Query</button>
+            <button class="tab-button" onclick="window.showTab('runtime', event)">Runtime</button>
+            <button class="tab-button" onclick="window.showTab('notify', event)">Notify</button>
+        </div>
+
+        <div id="scan" class="tab-content active">
+            <h2>Scanning Operations</h2>
+            <div class="scan-display">
+                <div id="scan-result">
+                    <p>Scan a barcode to see results</p>
+                </div>
+                <div id="scan-data" class="data-display"></div>
+            </div>
+            <div class="button-grid">
+                <button onclick="window.softScanTrigger()">Soft Scan Trigger</button>
+                <button onclick="window.softRfidTrigger()">RFID Trigger</button>
+                <button onclick="window.enableScannerInput()">Enable Scanner</button>
+                <button onclick="window.disableScannerInput()">Disable Scanner</button>
+            </div>
+        </div>
+
+        <div id="config" class="tab-content">
+            <h2>Configuration Management</h2>
+            <div class="input-group">
+                <input type="text" id="profile-name" placeholder="Profile name">
+                <select id="profile-list"></select>
+            </div>
+            <div class="button-grid">
+                <button onclick="window.createProfile()">Create Profile</button>
+                <button onclick="window.cloneProfile()">Clone Profile</button>
+                <button onclick="window.renameProfile()">Rename Profile</button>
+                <button onclick="window.deleteProfile()">Delete Profile</button>
+                <button onclick="window.setConfig()">Set Config</button>
+                <button onclick="window.getConfig()">Get Config</button>
+                <button onclick="window.importConfig()">Import Config</button>
+                <button onclick="window.restoreConfig()">Restore Config</button>
+                <button onclick="window.resetDefaultProfile()">Reset Default</button>
+                <button onclick="window.setDefaultProfile()">Set Default</button>
+            </div>
+            <div class="input-group">
+                <h3>Disabled App Management</h3>
+                <input type="text" id="app-package" placeholder="App package name">
+                <button onclick="window.setDisabledAppList()">Set Disabled Apps</button>
+                <button onclick="window.getDisabledAppList()">Get Disabled Apps</button>
+                <button onclick="window.setIgnoreDisabledProfiles()">Toggle Ignore Disabled</button>
+                <button onclick="window.getIgnoreDisabledProfiles()">Get Ignore Status</button>
+            </div>
+        </div>
+
+        <div id="query" class="tab-content">
+            <h2>Query Operations</h2>
+            <div class="button-grid">
+                <button onclick="window.getVersionInfo()">Get Version Info</button>
+                <button onclick="window.getDatawedgeStatus()">Get DW Status</button>
+                <button onclick="window.getScannerStatus()">Get Scanner Status</button>
+                <button onclick="window.getActiveProfile()">Get Active Profile</button>
+                <button onclick="window.getProfilesList()">Get Profiles List</button>
+                <button onclick="window.enumerateScanners()">Enumerate Scanners</button>
+                <button onclick="window.enumerateTriggers()">Enumerate Triggers</button>
+                <button onclick="window.getAssociatedApps()">Get Associated Apps</button>
+            </div>
+            <div id="query-result" class="result-display"></div>
+        </div>
+
+        <div id="runtime" class="tab-content">
+            <h2>Runtime Operations</h2>
+            <div class="button-grid">
+                <button onclick="window.enableDatawedge()">Enable DataWedge</button>
+                <button onclick="window.disableDatawedge()">Disable DataWedge</button>
+                <button onclick="window.switchToProfile()">Switch Profile</button>
+                <button onclick="window.switchScanner()">Switch Scanner</button>
+                <button onclick="window.switchScannerParams()">Switch Scanner Params</button>
+                <button onclick="window.setReportingOptions()">Set Reporting Options</button>
+                <button onclick="window.notify()">Notify (Beep/Vibrate)</button>
+            </div>
+            <div class="input-group">
+                <h3>Scanner Selection</h3>
+                <select id="scanner-list"></select>
+                <button onclick="window.switchScanner()">Switch to Selected</button>
+            </div>
+        </div>
+
+        <div id="notify" class="tab-content">
+            <h2>Notification Management</h2>
+            <div class="button-grid">
+                <button onclick="window.registerForNotification()">Register for Notifications</button>
+                <button onclick="window.unRegisterForNotification()">Unregister Notifications</button>
+            </div>
+            <div id="notification-log" class="log-display">
+                <h3>Notification Log</h3>
+                <div id="notification-messages"></div>
+            </div>
+        </div>
+
+        <div id="console" class="console">
+            <h3>Console Log</h3>
+            <div id="console-messages"></div>
+            <button onclick="window.clearConsole()">Clear</button>
+        </div>
+    </div>
+
+    <script>
+        // Define global functions immediately
+        window.showTab = function(tabName, event) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-button');
+            
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        };
+        
+        window.clearConsole = function() {
+            const consoleMessages = document.getElementById('console-messages');
+            if (consoleMessages) {
+                consoleMessages.innerHTML = '';
+            }
+        };
+        
+        // Initialize global variables
+        window.DataWedge = null;
+        window.currentProfile = '';
+        window.scanners = [];
+        window.profiles = [];
+    </script>
+    <script src="plugin-loader.js"></script>
+    <script src="app-functions.js"></script>
+    <script src="app-simple.js"></script>
+</body>
+</html>

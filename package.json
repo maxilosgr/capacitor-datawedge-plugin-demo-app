@@ -1,0 +1,26 @@
+{
+  "name": "datawedge-demo",
+  "version": "1.0.0",
+  "description": "Demo app for Capacitor DataWedge Plugin",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run copy:www && npx cap sync",
+    "copy:www": "cp -r src/* www/",
+    "android": "npx cap open android",
+    "run:android": "npx cap run android",
+    "sync": "npx cap sync",
+    "build:apk": "cd android && ./gradlew assembleDebug && echo 'APK built at: android/app/build/outputs/apk/debug/app-debug.apk'",
+    "install:apk": "adb -s 22072523021178 install -r android/app/build/outputs/apk/debug/app-debug.apk",
+    "run:device": "npm run build:apk && npm run install:apk && adb -s 22072523021178 shell am start -n com.datawedge.demo/.MainActivity",
+    "logs": "adb -s 22072523021178 logcat | grep -E 'Capacitor|DataWedge|com.datawedge.demo'"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "capacitor-datawedge-plugin": "file:../plugin"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0"
+  }
+}

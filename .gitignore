@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+www/
+android/
+ios/
+dist/
+
+# Build scripts
+*.sh
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
+.env
+.env.local
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+
+# Documentation files (except README.md)
+*.md
+!README.md
