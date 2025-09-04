@@ -50,7 +50,7 @@ Comprehensive demonstration app for the Capacitor DataWedge Plugin, showcasing a
 1. Clone or download this demo app
 2. Install dependencies:
 ```bash
-npm install
+npm install  # Automatically installs capacitor-datawedge-plugin from npm
 ```
 
 3. Copy web files and sync:
