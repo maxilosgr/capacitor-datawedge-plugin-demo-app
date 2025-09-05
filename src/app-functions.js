@@ -244,7 +244,7 @@ window.setConfig = createPluginFunction(async function() {
                 RESET_CONFIG: "false",
                 PARAM_LIST: {
                     intent_output_enabled: "true",
-                    intent_action: "com.sapstockcount.mobile.SCAN",
+                    intent_action: "gr.connectit.datawedge.SCAN",
                     intent_delivery: "2"  // Broadcast
                 }
             }
